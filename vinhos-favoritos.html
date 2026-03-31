@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Os teus vinhos favoritos</title>
+<style>
+  :root {
+    --cream: #F5EFE6;
+    --ink: #2B2318;
+    --sand: #D4B896;
+    --muted: #8B7355;
+    --border: rgba(139,115,85,0.3);
+    --green: #4A6741;
+    --accent: #C8A84B;
+    --font-title: Georgia, 'Times New Roman', serif;
+    --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    padding: 0 0 60px;
+  }
+
+  /* Header */
+  .header {
+    background: var(--green);
+    padding: 32px 24px 28px;
+    text-align: center;
+  }
+
+  .logo {
+    font-family: var(--font-title);
+    font-size: 32px;
+    font-style: italic;
+    color: white;
+    letter-spacing: 1px;
+    margin-bottom: 6px;
+  }
+
+  .tagline {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    font-style: italic;
+  }
+
+  .divider {
+    width: 60px;
+    height: 1px;
+    background: var(--sand);
+    margin: 10px auto 0;
+  }
+
+  /* Intro */
+  .intro {
+    padding: 24px 20px 8px;
+    text-align: center;
+  }
+
+  .intro-title {
+    font-family: var(--font-title);
+    font-size: 20px;
+    font-style: italic;
+    color: var(--ink);
+    margin-bottom: 10px;
+    line-height: 1.4;
+  }
+
+  .intro-text {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+
+  /* Form */
+  .form-wrap {
+    padding: 16px 20px;
+  }
+
+  .section-label {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 20px 0 8px;
+  }
+
+  .form-input {
+    width: 100%;
+    background: white;
+    border: 0.8px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: var(--font-body);
+    font-size: 15px;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-input:focus {
+    border-color: var(--accent);
+  }
+
+  .form-input::placeholder {
+    color: rgba(139,115,85,0.5);
+    font-style: italic;
+  }
+
+  /* Wine entries */
+  .wine-entry {
+    background: white;
+    border: 0.8px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+    position: relative;
+  }
+
+  .wine-num {
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .wine-row {
+    margin-bottom: 8px;
+  }
+
+  .wine-label {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  .wine-input {
+    width: 100%;
+    background: var(--cream);
+    border: 0.8px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--ink);
+    outline: none;
+  }
+
+  .wine-input:focus {
+    border-color: var(--accent);
+    background: white;
+  }
+
+  .wine-input::placeholder {
+    color: rgba(139,115,85,0.4);
+    font-style: italic;
+  }
+
+  .wine-row-2col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  /* Add wine button */
+  .btn-add {
+    width: 100%;
+    background: none;
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 4px;
+  }
+
+  .btn-add:active {
+    background: rgba(212,184,150,0.15);
+  }
+
+  /* Remove button */
+  .btn-remove {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: rgba(139,115,85,0.4);
+    cursor: pointer;
+    padding: 2px 6px;
+    line-height: 1;
+  }
+
+  /* Send button */
+  .btn-send {
+    width: calc(100% - 40px);
+    margin: 24px 20px 0;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 16px;
+    font-family: var(--font-body);
+    font-size: 17px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: opacity 0.2s;
+  }
+
+  .btn-send:active { opacity: 0.85; }
+
+  .btn-send svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* Footer note */
+  .footer-note {
+    text-align: center;
+    font-size: 12px;
+    color: var(--muted);
+    font-style: italic;
+    padding: 16px 20px 0;
+    line-height: 1.6;
+  }
+
+  /* Success screen */
+  .success {
+    display: none;
+    text-align: center;
+    padding: 60px 30px;
+  }
+
+  .success-icon {
+    font-size: 56px;
+    margin-bottom: 20px;
+  }
+
+  .success-title {
+    font-family: var(--font-title);
+    font-size: 24px;
+    font-style: italic;
+    margin-bottom: 12px;
+  }
+
+  .success-text {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">🍷 Os teus vinhos favoritos</div>
+  <div class="tagline">Ajuda-me a descobrir os melhores vinhos</div>
+  <div class="divider"></div>
+</div>
+
+<div class="intro">
+  <div class="intro-title">Leva menos de 2 minutos!</div>
+  <div class="intro-text">Partilha comigo os vinhos que mais gostas e compras com regularidade. A tua opinião faz toda a diferença! Obrigado!</div>
+</div>
+
+<div class="form-wrap" id="form-wrap">
+
+  <div class="section-label">O teu nome</div>
+  <input class="form-input" type="text" id="nome" placeholder="Como te chamas?" autocomplete="off">
+
+  <div class="section-label">Os teus vinhos favoritos</div>
+  <div id="wines-container"></div>
+
+  <button class="btn-add" onclick="addWine()">+ Adicionar mais um vinho</button>
+
+</div>
+
+<button class="btn-send" onclick="enviar()">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+  </svg>
+  Enviar por WhatsApp
+</button>
+
+<div class="footer-note">
+  Ao clicar "Enviar", a tua resposta é enviada diretamente<br>para mim pelo WhatsApp. Obrigado! 🍷
+</div>
+
+<div class="success" id="success">
+  <div class="success-icon">🍷</div>
+  <div class="success-title">Obrigado!</div>
+  <div class="success-text">As tuas respostas foram preparadas.<br>Só tens de enviar a mensagem no WhatsApp!</div>
+</div>
+
+<script>
+let wineCount = 0;
+
+const regiaoOptions = [
+  'Minho / V. Verdes', 'Douro', 'Dão', 'Bairrada',
+  'Lisboa', 'Tejo', 'Setúbal', 'Alentejo', 'Algarve', 'Outra'
+];
+
+const localOptions = [
+  'Supermercado', 'Garrafeira', 'Restaurante',
+  'Online', 'Produtor / Quinta', 'Outro'
+];
+
+const precoOptions = [
+  '< 5€', '5€ – 10€', '10€ – 20€', '20€ – 50€', '> 50€'
+];
+
+function addWine() {
+  wineCount++;
+  const n = wineCount;
+  const container = document.getElementById('wines-container');
+
+  const entry = document.createElement('div');
+  entry.className = 'wine-entry';
+  entry.id = 'wine-' + n;
+
+  entry.innerHTML = `
+    <div class="wine-num">Vinho ${n}</div>
+    ${n > 1 ? `<button class="btn-remove" onclick="removeWine(${n})">×</button>` : ''}
+    <div class="wine-row">
+      <span class="wine-label">Nome do vinho *</span>
+      <input class="wine-input" id="w${n}-nome" type="text" placeholder="ex: Pêra-Manca, Esporão Reserva...">
+    </div>
+    <div class="wine-row-2col">
+      <div>
+        <span class="wine-label">Tipo</span>
+        <select class="wine-input" id="w${n}-tipo">
+          <option value="">Selecionar...</option>
+          <option>Branco</option>
+          <option>Tinto</option>
+          <option>Rosé</option>
+          <option>Espumante</option>
+          <option>Fortificado</option>
+        </select>
+      </div>
+      <div>
+        <span class="wine-label">Região</span>
+        <select class="wine-input" id="w${n}-regiao">
+          <option value="">Selecionar...</option>
+          ${regiaoOptions.map(o => `<option>${o}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+    <div class="wine-row-2col">
+      <div>
+        <span class="wine-label">Preço habitual</span>
+        <select class="wine-input" id="w${n}-preco">
+          <option value="">Selecionar...</option>
+          ${precoOptions.map(o => `<option>${o}</option>`).join('')}
+        </select>
+      </div>
+      <div>
+        <span class="wine-label">Onde compras?</span>
+        <select class="wine-input" id="w${n}-local">
+          <option value="">Selecionar...</option>
+          ${localOptions.map(o => `<option>${o}</option>`).join('')}
+        </select>
+      </div>
+    </div>
+  `;
+
+  container.appendChild(entry);
+}
+
+function removeWine(n) {
+  const el = document.getElementById('wine-' + n);
+  if (el) el.remove();
+}
+
+function enviar() {
+  const nome = document.getElementById('nome').value.trim();
+  if (!nome) {
+    alert('Por favor introduz o teu nome!');
+    return;
+  }
+
+  // Collect wines
+  const wines = [];
+  document.querySelectorAll('.wine-entry').forEach(entry => {
+    const id = entry.id.replace('wine-', '');
+    const wineNome = (document.getElementById('w' + id + '-nome')?.value || '').trim();
+    if (!wineNome) return;
+    const tipo = document.getElementById('w' + id + '-tipo')?.value || '';
+    const regiao = document.getElementById('w' + id + '-regiao')?.value || '';
+    const local = document.getElementById('w' + id + '-local')?.value || '';
+    const preco = document.getElementById('w' + id + '-preco')?.value || '';
+    wines.push({ nome: wineNome, tipo, regiao, local, preco });
+  });
+
+  if (wines.length === 0) {
+    alert('Adiciona pelo menos um vinho!');
+    return;
+  }
+
+  // Build message
+  let msg = `🍷 *Vinhos Favoritos*\n\n`;
+  msg += `👤 *Nome:* ${nome}\n\n`;
+  msg += `🍾 *Vinhos favoritos:*\n`;
+
+  wines.forEach((w, i) => {
+    msg += `\n${i + 1}. *${w.nome}*`;
+    if (w.tipo) msg += ` (${w.tipo})`;
+    if (w.regiao) msg += `\n   📍 ${w.regiao}`;
+    if (w.local) msg += `\n   🛒 ${w.local}`;
+    if (w.preco) msg += `\n   💰 ${w.preco}`;
+  });
+
+  msg += `\n\n_Obrigado pela tua colaboração!_ 🍷`;
+
+  const url = `https://wa.me/351917440166?text=${encodeURIComponent(msg)}`;
+  window.open(url, '_blank');
+}
+
+// Start with 3 wine entries
+for(let i=0;i<3;i++) addWine();
+</script>
+
+</body>
+</html>
