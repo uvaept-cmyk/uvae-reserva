@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UVAE — Wine Tasting Tales · Book</title>
+<style>
+  :root {
+    --burgundy:        #7c1c41;
+    --burgundy-soft:   rgba(124,28,65,0.07);
+    --terracotta:      #c8543a;
+    --terracotta-soft: rgba(200,84,58,0.08);
+    --cream:           #F5EFE6;
+    --ink:             #1a0a0a;
+    --label:           #2e1010;
+    --muted:           #7a5a50;
+    --border:          rgba(124,28,65,0.18);
+    --white:           #ffffff;
+    --light-bg:        #faf6f1;
+    --font-heading:    Georgia, 'Times New Roman', Times, serif;
+    --font-body:       -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    padding-bottom: 60px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .header {
+    background: var(--burgundy);
+    position: relative;
+    overflow: hidden;
+    padding: 36px 24px 32px;
+    text-align: center;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0; bottom: 0; left: 0;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(226,114,91,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(226,114,91,0.12) 0%, transparent 50%);
+    pointer-events: none;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0; right: 0;
+    height: 28px;
+    background: var(--cream);
+    -webkit-clip-path: polygon(0 100%, 100% 100%, 100% 0);
+    clip-path: polygon(0 100%, 100% 100%, 100% 0);
+  }
+  .header-logo { display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center; margin-bottom: 14px; }
+  .header-logo svg { width: 88px; height: 88px; filter: drop-shadow(0 2px 12px rgba(0,0,0,0.3)); }
+  .header-title { font-family: var(--font-body); font-weight: 400; font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: #e8876e; margin-bottom: 8px; }
+  .header-main  { font-family: var(--font-heading); font-style: italic; font-size: 26px; color: #fff; line-height: 1.25; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .header-sub   { font-family: var(--font-body); font-size: 13px; color: rgba(255,255,255,0.58); letter-spacing: 0.5px; }
+  .divider-line { width: 48px; height: 1px; background: #e8876e; margin: 12px auto; opacity: 0.7; }
+
+  .intro-card { margin: 28px 20px 0; background: var(--white); border: 0.8px solid var(--border); border-radius: 14px; padding: 20px 18px; text-align: center; }
+  .intro-card-title { font-family: var(--font-heading); font-style: italic; font-size: 18px; color: var(--burgundy); margin-bottom: 8px; line-height: 1.4; }
+  .intro-card-text  { font-family: var(--font-body); font-size: 13.5px; color: var(--muted); line-height: 1.8; }
+  .intro-card-details { margin-top: 14px; display: -webkit-flex; display: flex; -webkit-flex-wrap: wrap; flex-wrap: wrap; gap: 8px; -webkit-justify-content: center; justify-content: center; }
+  .intro-card-details .detail-pill { margin: 4px; }
+  .detail-pill { background: var(--light-bg); border: 0.8px solid var(--border); border-radius: 20px; padding: 5px 12px; font-size: 12px; color: var(--burgundy); font-family: var(--font-body); }
+  .intro-card-links { margin-top: 10px; display: -webkit-flex; display: flex; -webkit-flex-direction: column; flex-direction: column; gap: 8px; width: 100%; }
+  .intro-card-links .detail-link + .detail-link { margin-top: 8px; }
+  .detail-link { display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; gap: 9px; padding: 11px 14px; border-radius: 10px; font-family: var(--font-body); font-size: 13.5px; font-weight: 500; text-decoration: none; transition: opacity 0.2s; }
+  .detail-link:active { opacity: 0.75; }
+  .detail-link svg { width: 16px; height: 16px; -webkit-flex-shrink: 0; flex-shrink: 0; margin-right: 9px; }
+  .detail-link--map { background: var(--burgundy-soft); border: 0.8px solid rgba(124,28,65,0.22); color: var(--burgundy); }
+  .detail-link--map svg { stroke: var(--burgundy); fill: none; }
+  .detail-link--reviews { background: var(--terracotta-soft); border: 0.8px solid rgba(200,84,58,0.22); color: var(--terracotta); }
+  .detail-link--reviews svg { fill: var(--terracotta); stroke: var(--terracotta); }
+
+  .form-wrap { padding: 10px 20px; }
+  .section-label { font-family: var(--font-body); font-size: 11px; font-weight: 700; color: var(--label); letter-spacing: 1.8px; text-transform: uppercase; margin: 22px 0 7px; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; gap: 8px; }
+  .section-label .req, .section-label .optional { margin-left: 4px; }
+  .section-label .optional { font-size: 10px; color: var(--muted); letter-spacing: 0.5px; text-transform: lowercase; font-weight: 400; font-style: italic; }
+  .req { color: #c8543a; font-size: 16px; line-height: 1; }
+  .form-input, .form-select { width: 100%; background: var(--white); border: 0.8px solid var(--border); border-radius: 10px; padding: 13px 15px; font-family: var(--font-body); font-size: 15px; color: var(--ink); outline: none; transition: border-color 0.2s, box-shadow 0.2s; -webkit-appearance: none; -moz-appearance: none; appearance: none; }
+  .form-input:focus, .form-select:focus { border-color: var(--burgundy); box-shadow: 0 0 0 3px rgba(124,28,65,0.08); }
+  .form-input::placeholder { color: rgba(122,90,80,0.5); font-style: italic; font-size: 13px; }
+  .select-wrap { position: relative; }
+  .select-wrap::after { content: '▾'; position: absolute; right: 14px; top: 50%; transform: translateY(-50%); color: var(--terracotta); font-size: 14px; pointer-events: none; }
+  .form-sep { margin: 26px 0 0; border: none; border-top: 0.8px solid var(--border); }
+
+  .consent-wrap { display: -webkit-flex; display: flex; -webkit-align-items: flex-start; align-items: flex-start; gap: 12px; margin-top: 22px; cursor: pointer; padding: 16px; background: var(--white); border: 0.8px solid var(--border); border-radius: 12px; transition: border-color 0.2s, box-shadow 0.2s; }
+  .consent-wrap:hover { border-color: var(--burgundy); }
+  .consent-wrap input[type="checkbox"] { display: none; }
+  .consent-box { -webkit-flex-shrink: 0; flex-shrink: 0; margin-right: 12px; width: 22px; height: 22px; border: 1.5px solid var(--border); border-radius: 6px; background: var(--light-bg); display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center; transition: background 0.2s, border-color 0.2s; margin-top: 1px; }
+  .consent-box svg { width: 12px; height: 12px; opacity: 0; transition: opacity 0.15s; }
+  .consent-wrap input[type="checkbox"]:checked ~ .consent-box { background: var(--burgundy); border-color: var(--burgundy); }
+  .consent-wrap input[type="checkbox"]:checked ~ .consent-box svg { opacity: 1; }
+  .consent-text { font-family: var(--font-body); font-size: 13px; color: var(--muted); line-height: 1.7; }
+  .consent-wrap.error { border-color: var(--terracotta); box-shadow: 0 0 0 3px rgba(200,84,58,0.12); }
+
+  .aviso { margin: 20px 20px 0; background: var(--light-bg); border: 0.8px solid var(--border); border-radius: 12px; padding: 14px 16px; display: -webkit-flex; display: flex; gap: 10px; -webkit-align-items: flex-start; align-items: flex-start; }
+  .aviso-icon { margin-right: 10px; }
+  .aviso-icon { font-size: 18px; flex-shrink: 0; line-height: 1.4; }
+  .aviso-text { font-family: var(--font-body); font-size: 12.5px; color: var(--muted); line-height: 1.7; }
+  .aviso-text strong { color: var(--label); font-weight: 600; }
+
+  .btn-send { width: calc(100% - 40px); margin: 24px 20px 0; background: var(--burgundy); color: white; border: none; border-radius: 14px; padding: 17px 20px; font-family: var(--font-body); font-size: 16px; font-weight: 600; cursor: pointer; display: -webkit-flex; display: flex; -webkit-align-items: center; align-items: center; -webkit-justify-content: center; justify-content: center; gap: 10px; transition: opacity 0.2s, transform 0.15s; letter-spacing: 0.3px; -webkit-tap-highlight-color: transparent; cursor: pointer; }
+  .btn-send:active { opacity: 0.88; transform: scale(0.985); }
+  .btn-send svg { width: 20px; height: 20px; -webkit-flex-shrink: 0; flex-shrink: 0; margin-right: 10px; }
+  .footer-note { text-align: center; font-family: var(--font-body); font-size: 12.5px; color: var(--muted); font-style: italic; padding: 14px 24px 0; line-height: 1.7; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">
+    <svg viewBox="0 0 2500 2500" xmlns="http://www.w3.org/2000/svg">
+      <circle fill="#ffffff" fill-opacity="0.12" cx="1250" cy="1250" r="1250"/>
+      <path fill="#ffffff" d="M648.57,650.16c-94.02,273.48-164.99,562.78-48.62,825.55,68.29,154.34,196.23,281.24,351.01,348.14,36.91,15.98,73.42,34.13,108.52,53.95,106.24,59.53,173.88,184.53,190.73,348.63,17.55-168.79,88.08-297.18,195.28-350.55.38-.29.79-.55,1.21-.76.46-.25,1.06-.52,1.65-.79l.38-.17c.22-.1.44-.18.65-.3,29.19-16.44,59.31-30.65,88.44-44.38,46.06-21.74,93.7-44.21,135.76-74.93,392.94-286.83,305.64-735,185.69-1093.4-33.56-100.3-68.94-177.08-106.26-256.36,53.51,151.98,93.48,297.74,120.78,402.27,68.92,264,51.22,488.13-54.09,685.19-110,205.97-321.57,328.94-565.95,328.95-2.66,0-5.3-.01-7.98-.04-245.62-2.67-463.69-133.65-569.11-341.82-103.93-204.81-117.35-446.33-38.8-698.43,8.43-27.06,16.94-54.66,25.59-82.7l1.23-3.99c32.51-105.37,65.86-213.48,103.09-321.82-2.97,6.22-5.93,12.4-8.87,18.54-38.81,81.07-75.36,157.44-110.35,259.25Z"/>
+      <path fill="#e2725b" d="M991.08,1031.39v183.1c0,28.83-5.5,53.61-16.34,73.67-10.97,20.26-26.37,35.58-45.79,45.51-19.17,9.8-41.17,14.78-65.42,14.78-37.72,0-68.38-11.54-91.12-34.29-22.75-22.74-34.29-56.28-34.29-99.67v-117.11c0-36.39,29.61-65.99,66-65.99h6.16v183.1c0,22.01,4.74,38.54,14.07,49.15,9.26,10.53,22.5,15.65,40.47,15.65s30.77-5.12,40.04-15.65c9.32-10.61,14.07-27.15,14.07-49.15v-117.11c0-36.39,29.61-65.99,65.99-65.99h6.17Z"/>
+      <path fill="#e2725b" d="M1306.39,1034.51l-111.22,314.07h-34.01c-31.13,0-59.03-19.71-69.43-49.07l-69.39-195.95c-5.68-16.06-3.31-33.24,6.52-47.16,9.83-13.92,25.25-21.9,42.28-21.9h4.43l76.38,225.89,54.58-160.6c13.28-39.05,49.9-65.29,91.14-65.29h8.72Z"/>
+      <path fill="#e2725b" d="M1555.5,1349.03h-37.26c-23.73,0-44.87-15.07-52.61-37.5l-8.01-23.19h-112.2l-8.28,23.51c-7.83,22.23-28.92,37.17-52.5,37.17h-37.49l102.21-274.42c8.07-21.67,29.04-36.24,52.16-36.24s44.12,14.59,52.18,36.3l101.81,274.36ZM1437.1,1230.27l-35.78-102.5-35.78,102.5h71.55Z"/>
+      <path fill="#e2725b" d="M1642.86,1093.05v65.89h106.85v6.16c0,28.85-23.48,52.33-52.33,52.33h-54.53v68.88h119.67v8.3c0,28.85-23.48,52.33-52.32,52.33h-87.61c-28.85,0-52.32-23.47-52.32-52.33v-209.42c0-28.85,23.48-52.33,52.32-52.33h139.93v7.87c0,28.85-23.48,52.32-52.32,52.32h-67.34Z"/>
+    </svg>
+  </div>
+  <div class="header-title">Wine Tasting Tales</div>
+  <div class="header-main">Book your experience</div>
+  <div class="divider-line"></div>
+  <div class="header-sub">Carvoeiro · Algarve · Portugal</div>
+</div>
+
+<div class="intro-card">
+  <div class="intro-card-title">A journey through Portuguese wines</div>
+  <div class="intro-card-text">
+    Fill in the form and we'll receive your booking via WhatsApp.<br>
+    Seats are limited — don't miss your spot! Session in English.
+  </div>
+  <div class="intro-card-details">
+    <span class="detail-pill">🍷 6 wines tasted</span>
+    <span class="detail-pill">🧀 Artisanal snacks</span>
+    <span class="detail-pill">⏱ 2 hours</span>
+  </div>
+  <div class="intro-card-links">
+    <a class="detail-link detail-link--map"
+       href="https://www.google.com/maps/place//data=!4m2!3m1!1s0xd1ad76a87da9be9:0xbff7b02f45d7a405?sa=X&ved=1t:8290&ictx=111"
+       target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+      </svg>
+      Rua do Barranco, Lot 10 — Carvoeiro
+    </button>
+    <a class="detail-link detail-link--reviews"
+       href="https://www.google.com/search?sca_esv=c7d0a1f15c970bc6&sxsrf=ANbL-n78zr-XC8fSjPPFCYH_RU72Pzexbw:1774833759860&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOUJM-abxau7ZZo47t-gMA85USXeBqmNyqSLm_TZAIjWAPv7z3tlpnwsWvhzVXPqiU4-JHxwPCapIURqRgLvoLyMU7UMWrywRJ4rILQNUqetXm7MH3Q%3D%3D&q=UVAE+Wine+Tasting+Tales+Cr%C3%ADticas&sa=X&ved=2ahUKEwiMwqr-usaTAxWo2gIHHZxTA9cQ0bkNegQIJxAH"
+       target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+      </svg>
+      See Reviews on Google
+    </a>
+  </div>
+</div>
+
+<div class="form-wrap">
+
+  <div class="section-label">Date <span class="req">*</span></div>
+  <div class="select-wrap">
+    <select class="form-select" id="data">
+      <option value="">Select date &amp; time...</option>
+      <option value="Tuesday 3 pm">Tuesday 3 pm</option>
+      <option value="Friday 2 pm">Friday 2 pm</option>
+      <option value="Sunday 2 pm">Sunday 2 pm</option>
+    </select>
+  </div>
+
+  <div class="section-label">Name <span class="req">*</span></div>
+  <input class="form-input" type="text" id="nome" placeholder="Your name" autocomplete="name">
+
+  <div class="section-label">Phone number <span class="req">*</span></div>
+  <input class="form-input" type="tel" id="telefone" placeholder="(country code) + number" autocomplete="tel">
+
+  <div class="section-label">E-mail <span class="optional">(optional)</span></div>
+  <input class="form-input" type="email" id="email" placeholder="your@email.com" autocomplete="email">
+
+  <div class="section-label">Number of people <span class="req">*</span></div>
+  <div class="select-wrap">
+    <select class="form-select" id="pessoas">
+      <option value="">Select...</option>
+      <option>1 person</option>
+      <option>2 people</option>
+      <option>3 people</option>
+      <option>4 people</option>
+      <option>5 people</option>
+      <option>6 people</option>
+      <option>7 people</option>
+      <option>8 people</option>
+      <option>9 people</option>
+    </select>
+  </div>
+
+  <hr class="form-sep">
+
+  <div class="section-label">Social Media <span class="optional">(optional)</span></div>
+  <input class="form-input" type="text" id="social" placeholder="@username (Instagram, Facebook, TikTok, etc.)">
+
+  <div class="section-label">Dietary restrictions <span class="req">*</span></div>
+  <input class="form-input" type="text" id="restricoes" placeholder="none, vegetarian, gluten free, pescaterian, tree nuts">
+
+  <div class="section-label">Nationality <span class="optional">(optional)</span></div>
+  <div class="select-wrap">
+    <select class="form-select" id="nacionalidade">
+      <option value="">Select...</option>
+      <option>🇵🇹 Portuguese</option>
+      <option>🇬🇧 British</option>
+      <option>🇩🇪 German</option>
+      <option>🇫🇷 French</option>
+      <option>🇳🇱 Dutch</option>
+      <option>🇮🇪 Irish</option>
+      <option>🇧🇪 Belgian</option>
+      <option>🇸🇪 Swedish</option>
+      <option>🇩🇰 Danish</option>
+      <option>🇳🇴 Norwegian</option>
+      <option>🇫🇮 Finnish</option>
+      <option>🇪🇸 Spanish</option>
+      <option>🇮🇹 Italian</option>
+      <option>🇺🇸 American</option>
+      <option>🇨🇦 Canadian</option>
+      <option>🇦🇺 Australian</option>
+      <option>🇧🇷 Brazilian</option>
+      <option>Other</option>
+    </select>
+  </div>
+
+  <div class="section-label">How did you hear about us? <span class="optional">(optional)</span></div>
+  <div class="select-wrap">
+    <select class="form-select" id="origem">
+      <option value="">Select...</option>
+      <option>Instagram / Redes Sociais</option>
+      <option>Google</option>
+      <option>TripAdvisor</option>
+      <option>Friend / Family recommendation</option>
+      <option>Hotel / Accommodation</option>
+      <option>Restaurant / Bar</option>
+      <option>Flyer / Leaflet</option>
+      <option>Passing by</option>
+      <option>Other</option>
+    </select>
+  </div>
+
+  <hr class="form-sep">
+
+  <label class="consent-wrap" id="consent-label">
+    <input type="checkbox" id="consentimento">
+    <span class="consent-box">
+      <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polyline points="1.5,6 4.5,9 10.5,3" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </span>
+    <span class="consent-text">
+      I authorise UVAE to store and use my personal data for booking management and future communications about experiences and events. Data will not be shared with third parties.
+    </span>
+  </label>
+
+</div>
+
+<div class="aviso">
+  <span class="aviso-icon">⚠️</span>
+  <div class="aviso-text">
+    <strong>Important information:</strong> This experience is exclusively for guests aged 18 and over — minors are not permitted. No pets allowed on the premises.
+  </div>
+</div>
+
+<button class="btn-send" onclick="enviar();">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+  </svg>
+  Send Booking via WhatsApp
+</button>
+
+<div class="footer-note">
+  Clicking "Send" will open WhatsApp with your details already formatted.<br>
+  Bookings are subject to confirmation. Limited seats.
+</div>
+
+<script>
+function enviar() {
+  var data       = document.getElementById('data').value.trim();
+  var nome       = document.getElementById('nome').value.trim();
+  var telefone   = document.getElementById('telefone').value.trim();
+  var pessoas    = document.getElementById('pessoas').value.trim();
+  var restricoes = document.getElementById('restricoes').value.trim();
+  var ok         = document.getElementById('consentimento').checked;
+
+  if (!data)       { alert('Please select your visit date.');                 document.getElementById('data').focus();       return; }
+  if (!nome)       { alert('Please enter your name.');                        document.getElementById('nome').focus();       return; }
+  if (!telefone)   { alert('Please enter your phone number.');                document.getElementById('telefone').focus();   return; }
+  if (!pessoas)    { alert('Please select the number of people.');            document.getElementById('pessoas').focus();    return; }
+  if (!restricoes) { alert('Please fill in the dietary restrictions field.'); document.getElementById('restricoes').focus(); return; }
+  if (!ok) {
+    var label = document.getElementById('consent-label');
+    label.classList.add('error');
+    try { label.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch(ex) { label.scrollIntoView(false); }
+    setTimeout(function(){ label.classList.remove('error'); }, 3000);
+    alert('Please authorise your data sharing to proceed.');
+    return;
+  }
+
+  var email  = document.getElementById('email').value.trim();
+  var social = document.getElementById('social').value.trim();
+  var nac    = document.getElementById('nacionalidade').value.trim();
+  var origem = document.getElementById('origem').value.trim();
+
+  var NL  = '%0A';
+  var msg = '*UVAE - Wine Tasting Tales*' + NL;
+  msg += 'Carvoeiro, Algarve' + NL;
+  msg += '-------------------' + NL + NL;
+  msg += '*BOOKING REQUEST*' + NL + NL;
+  msg += '*Date:* ' + data + NL;
+  msg += '*No. of people:* ' + pessoas + NL;
+  msg += '*Name:* ' + nome + NL;
+  msg += '*Phone:* ' + telefone + NL;
+  if (email)      { msg += '*E-mail:* ' + email + NL; }
+  if (social)     { msg += '*Social Media:* ' + social + NL; }
+  if (restricoes) { msg += '*Dietary restrictions:* ' + restricoes + NL; }
+  if (nac)        { msg += '*Nationality:* ' + nac + NL; }
+  if (origem)     { msg += '*How they heard about us:* ' + origem + NL; }
+  msg += NL + '-------------------' + NL;
+  msg += '_Awaiting booking confirmation. Thank you!_';
+
+  var url = 'https://wa.me/351910983443?text=' + msg;
+  window.open(url, '_blank');
+}
+</script>
+
+</body>
+</html>
