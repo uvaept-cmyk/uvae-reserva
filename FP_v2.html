@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>EnoPilot™ — Ficha de Prova</title>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=IM+Fell+English:ital@0;1&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#F2EAD8;--cream2:#EDE4CF;--ink:#2B2318;--wine:#6D2E46;
+  --sand:#D4B896;--sanddk:#A8845A;--muted:#7A6A55;--paper:#F8F2E6;
+  --border:rgba(150,120,80,0.35);--green:#1D6A47;--red:#8C1A1A;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{background:#1a1a1a;}
+body{
+  background:#1a1a1a;
+  display:flex;justify-content:center;
+  padding:0 0 60px;
+  min-height:100vh;
+  font-family:'Kalam',cursive;
+}
+.phone{
+  width:100%;max-width:390px;
+  background:var(--cream);
+  min-height:100vh;
+  position:relative;
+}
+
+/* ── HEADER ── */
+.hdr{background:var(--wine);padding:14px 18px 12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.3);}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.hdr-brand{font-family:'Caveat',cursive;font-size:26px;font-weight:700;color:#fff;line-height:1;}
+.hdr-sub{font-family:'IM Fell English',serif;font-size:10px;font-style:italic;color:rgba(255,255,255,0.65);}
+.btn-add{
+  background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.4);
+  color:#fff;border-radius:20px;padding:5px 14px;
+  font-family:'Caveat',cursive;font-size:16px;font-weight:700;
+  cursor:pointer;white-space:nowrap;
+}
+.btn-add:active{background:rgba(255,255,255,0.28);}
+
+/* ── CURADOR BAR ── */
+.curador-bar{
+  background:rgba(0,0,0,0.25);
+  display:flex;align-items:center;gap:8px;
+  padding:5px 12px;border-radius:6px;
+}
+.curador-bar label{font-size:10px;color:rgba(255,255,255,0.6);letter-spacing:0.5px;white-space:nowrap;}
+.curador-bar input{
+  background:transparent;border:none;outline:none;
+  font-family:'Kalam',cursive;font-size:13px;color:#fff;
+  flex:1;min-width:0;
+}
+.curador-bar input::placeholder{color:rgba(255,255,255,0.35);}
+
+/* ── TABS ── */
+.tabs-wrap{
+  background:var(--cream2);border-bottom:1px solid var(--border);
+  overflow-x:auto;white-space:nowrap;display:flex;
+  scrollbar-width:none;
+}
+.tabs-wrap::-webkit-scrollbar{display:none;}
+.v-tab{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:9px 14px 8px;
+  font-family:'Kalam',cursive;font-size:13px;
+  color:var(--muted);cursor:pointer;
+  border-bottom:2.5px solid transparent;
+  transition:all 0.2s;flex-shrink:0;
+}
+.v-tab.active{color:var(--wine);border-bottom-color:var(--wine);font-weight:700;}
+.v-tab.done{color:var(--sanddk);border-bottom-color:var(--sand);}
+.tab-x{
+  width:15px;height:15px;border-radius:50%;
+  background:rgba(109,46,70,0.12);color:var(--muted);
+  font-size:10px;line-height:15px;text-align:center;flex-shrink:0;
+}
+.v-tab.active .tab-x{background:var(--wine);color:#fff;}
+
+/* ── CONTENT ── */
+.content{padding:16px 16px 16px;}
+.vinho-pane{display:none;}
+.vinho-pane.active{display:block;}
+
+/* ── SECTION DIVIDER ── */
+.divider{height:1px;background:var(--border);margin:14px 0;}
+.sec-title{font-family:'Caveat',cursive;font-size:19px;color:var(--wine);margin-bottom:10px;}
+
+/* ── FIELDS ── */
+.field{margin-bottom:10px;}
+.field:last-child{margin-bottom:0;}
+.field label{display:block;font-size:11px;font-weight:700;color:var(--sanddk);margin-bottom:4px;letter-spacing:0.4px;text-transform:uppercase;}
+.req{color:var(--wine);}
+.field input,.field select,.field textarea{
+  width:100%;background:var(--paper);border:1px solid var(--border);border-radius:8px;
+  padding:9px 11px;font-family:'Kalam',cursive;font-size:13px;color:var(--ink);outline:none;
+  -webkit-appearance:none;transition:border-color 0.15s;
+}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--sanddk);background:#fff;}
+.field textarea{resize:none;min-height:60px;line-height:1.5;}
+.row2g{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.row3g{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;}
+.field-hint{font-size:10px;color:var(--muted);margin-top:3px;font-style:italic;}
+.wc{font-size:10px;color:var(--muted);margin-top:3px;}
+.wc.over{color:var(--red);font-weight:700;}
+
+/* ── NATURAL TOGGLE ── */
+.nat-row{display:flex;gap:6px;}
+.nat-btn{
+  flex:1;padding:8px 6px;font-size:12px;font-family:'Kalam',cursive;
+  text-align:center;border:1px solid var(--border);border-radius:8px;
+  cursor:pointer;color:var(--muted);background:var(--paper);transition:all 0.15s;user-select:none;
+}
+.nat-btn.sel{background:#E8F5EE;border-color:var(--green);color:var(--green);font-weight:700;}
+
+/* ── MOMENTOS ── */
+.mom-hint{font-size:10px;color:var(--muted);margin-bottom:8px;font-style:italic;line-height:1.5;}
+.mom-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.mom-btn{
+  padding:10px 8px;border-radius:10px;border:1.5px solid var(--border);
+  background:var(--paper);font-family:'Kalam',cursive;font-size:13px;color:var(--muted);
+  cursor:pointer;text-align:left;line-height:1.4;position:relative;
+  transition:all 0.15s;user-select:none;-webkit-tap-highlight-color:transparent;
+}
+.mom-btn .mc{font-family:'Caveat',cursive;font-size:18px;font-weight:700;display:block;margin-bottom:1px;}
+.mom-btn .mn{font-size:11px;}
+.mom-btn .mb{
+  position:absolute;top:6px;right:7px;width:17px;height:17px;border-radius:50%;
+  font-family:'Caveat',cursive;font-size:11px;font-weight:700;
+  display:none;align-items:center;justify-content:center;color:white;
+}
+.mom-btn.p1{background:var(--wine);border-color:var(--wine);color:white;}
+.mom-btn.p1 .mb{display:flex;background:rgba(255,255,255,0.3);}
+.mom-btn.p2{background:var(--sanddk);border-color:var(--sanddk);color:white;}
+.mom-btn.p2 .mb{display:flex;background:rgba(255,255,255,0.3);}
+.mom-btn.p3{background:var(--sand);border-color:var(--sanddk);color:var(--ink);}
+.mom-btn.p3 .mb{display:flex;background:rgba(43,35,24,0.2);color:var(--ink);}
+
+/* ── EIXOS ── */
+.eixo-hint{font-size:10px;color:var(--muted);margin-bottom:8px;font-style:italic;}
+.eixo-line{display:flex;align-items:center;margin-bottom:8px;}
+.eixo-line:last-child{margin-bottom:0;}
+.eixo-lbl-txt{font-size:12px;color:var(--muted);width:105px;flex-shrink:0;}
+.eixo-circles{display:flex;gap:8px;}
+.e-circle{
+  width:36px;height:36px;border-radius:50%;border:1.5px solid var(--border);
+  background:var(--paper);font-family:'Caveat',cursive;font-size:18px;font-weight:700;
+  color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:all 0.15s;user-select:none;-webkit-tap-highlight-color:transparent;
+}
+.e-circle.sel{background:var(--wine);border-color:var(--wine);color:#fff;}
+
+/* ── GLOSSÁRIO ── */
+.gloss-section{margin-bottom:10px;}
+.gloss-section:last-child{margin-bottom:0;}
+.gloss-label{font-size:10px;color:var(--sanddk);font-weight:700;margin-bottom:5px;letter-spacing:0.5px;text-transform:uppercase;}
+.tags{display:flex;flex-wrap:wrap;gap:5px;}
+.tag{
+  padding:5px 10px;border-radius:16px;border:1px solid var(--border);
+  background:var(--paper);font-family:'Kalam',cursive;font-size:11px;
+  color:var(--muted);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;
+  transition:all 0.15s;
+}
+.tag.sel{background:var(--sand);border-color:var(--sanddk);color:var(--ink);font-weight:700;}
+.tag.sel3{background:var(--wine);border-color:var(--wine);color:#fff;font-weight:700;}
+.tag.disabled{opacity:0.35;pointer-events:none;}
+.tag-counter{font-size:10px;color:var(--muted);margin-top:6px;}
+.tag-counter.full{color:var(--wine);font-weight:700;}
+
+/* ── PREVIEW ── */
+.preview-card{background:var(--ink);border-radius:10px;padding:12px 14px;margin-top:12px;}
+.preview-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--sand);margin-bottom:8px;}
+.preview-empty{font-family:'IM Fell English',serif;font-size:13px;font-style:italic;color:rgba(255,255,255,0.3);line-height:1.6;}
+.preview-nota{font-family:'IM Fell English',serif;font-size:14px;font-style:italic;color:white;line-height:1.75;}
+.preview-segredo{font-family:'Kalam',cursive;font-size:12px;color:var(--sand);margin-top:8px;padding-top:8px;border-top:0.8px solid rgba(212,184,150,0.25);}
+
+/* ── BOTTOM BAR ── */
+.bottom-bar{
+  position:fixed;bottom:0;left:50%;transform:translateX(-50%);
+  width:100%;max-width:390px;
+  background:var(--cream2);border-top:1px solid var(--border);
+  padding:10px 14px;display:flex;gap:8px;z-index:200;
+}
+.btn-enviar{
+  flex:1;background:var(--wine);color:#fff;border:none;border-radius:10px;
+  padding:13px;font-family:'Caveat',cursive;font-size:18px;font-weight:700;
+  cursor:pointer;transition:background 0.2s;
+}
+.btn-enviar:active{opacity:0.85;}
+.btn-limpar{
+  background:transparent;border:1px solid var(--border);color:var(--muted);
+  border-radius:10px;padding:13px 14px;
+  font-family:'Kalam',cursive;font-size:13px;cursor:pointer;white-space:nowrap;
+}
+
+/* ── EMPTY STATE ── */
+.empty-state{
+  padding:60px 24px;text-align:center;
+  font-family:'IM Fell English',serif;font-style:italic;
+  color:var(--muted);font-size:15px;line-height:1.8;
+}
+.empty-state .big{font-family:'Caveat',cursive;font-size:42px;color:var(--sand);display:block;margin-bottom:10px;}
+
+/* ── MODAL ── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.55);z-index:500;
+  align-items:flex-end;justify-content:center;
+}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:var(--cream);border-radius:20px 20px 0 0;
+  padding:22px 18px 36px;width:100%;max-width:390px;
+  animation:slideUp 0.22s ease;
+}
+@keyframes slideUp{from{transform:translateY(30px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.modal h3{font-family:'Caveat',cursive;font-size:22px;color:var(--wine);margin-bottom:3px;}
+.modal p{font-size:12px;color:var(--muted);margin-bottom:16px;}
+.modal .field input{font-size:15px;padding:10px 12px;}
+.modal-btns{display:flex;gap:8px;margin-top:12px;}
+.mbtn{flex:1;padding:12px;border-radius:10px;font-family:'Caveat',cursive;font-size:17px;font-weight:700;cursor:pointer;border:none;}
+.mbtn-ok{background:var(--wine);color:#fff;}
+.mbtn-cancel{background:transparent;border:1px solid var(--border);color:var(--muted);}
+
+/* ── TOAST ── */
+.toast{
+  position:fixed;top:80px;left:50%;transform:translateX(-50%) translateY(-8px);
+  background:var(--ink);color:#fff;border-radius:20px;padding:8px 20px;
+  font-family:'Caveat',cursive;font-size:15px;opacity:0;
+  transition:all 0.28s;pointer-events:none;z-index:999;white-space:nowrap;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<div class="phone">
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-top">
+    <div>
+      <div class="hdr-brand">EnoPilot™</div>
+      <div class="hdr-sub">Ficha de Prova Pessoal</div>
+    </div>
+    <button class="btn-add" onclick="addVinho()">+ Vinho</button>
+  </div>
+  <div class="curador-bar">
+    <label>CURADOR</label>
+    <input type="text" id="f-curador" value="Hugo Conde" autocomplete="off" autocorrect="off" spellcheck="false">
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrap" id="tabs-wrap"></div>
+
+<!-- CONTENT -->
+<div class="content">
+  <div id="empty-state" class="empty-state">
+    <span class="big">🍷</span>
+    Nenhum vinho ainda.<br>Toca em <strong>+ Vinho</strong> para começar.
+  </div>
+  <div id="vinho-panes"></div>
+</div>
+
+</div><!-- /phone -->
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <button class="btn-limpar" onclick="limparActual()">↺ Limpar</button>
+  <button class="btn-enviar" onclick="enviarEmail()">✉ Enviar para Master Sheet</button>
+</div>
+
+<!-- MODAL NOVO VINHO -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal">
+    <h3>Novo vinho</h3>
+    <p>Nome do vinho para identificar o separador.</p>
+    <div class="field">
+      <label>Nome do vinho</label>
+      <input type="text" id="modal-nome" placeholder="ex: Niepoort Redoma Branco 2022" autocomplete="off">
+    </div>
+    <div class="modal-btns">
+      <button class="mbtn mbtn-cancel" onclick="closeModal()">Cancelar</button>
+      <button class="mbtn mbtn-ok" onclick="confirmAdd()">Adicionar</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ── CONSTANTES (idênticas ao Perfil Curador) ── */
+const MOMENTOS = {D:'Descomplicar',C:'Convívio',G:'Gastronómico',E:'Descoberta',T:'Tempo para mim'};
+const MOMENTOS_EMOJI = {D:'☁️',C:'🥂',G:'🍽️',E:'🧭',T:'🕯️'};
+const GCATS = {
+  'Estrutura':       ['leve','delicado','redondo','suave','equilibrado','cremoso','encorpado','robusto','denso'],
+  'Acidez / Frescura':['muito suave','refrescante','fresco','vivo','vibrante','tenso','cortante'],
+  'Persistência':    ['curto','directo','persistente','longo','interminável'],
+  'Aromaticidade':   ['discreto','subtil','expressivo','aromático','intenso','perfumado','explosivo'],
+  'Carácter':        ['mineral','salino','floral','frutado','especiado','amadeirado','terroso','fumado','vulcânico','oxidativo']
+};
+const TIPO_ARTIGO = {tinto:'Um tinto',branco:'Um branco','rosé':'Um rosé',espumante:'Um espumante',generoso:'Um vinho'};
+const REGIOES = {
+  '':'—','alentejo':'Alentejo','douro':'Douro','dao':'Dão',
+  'vv':'Vinhos Verdes / Minho','algarve':'Algarve','lisboa':'Lisboa',
+  'bairrada':'Bairrada','tejo':'Tejo','setubal':'Setúbal / Palmela',
+  'madeira':'Madeira','acores':'Açores'
+};
+
+/* ── ESTADO ── */
+let vinhos = [];
+let vActual = 0;
+
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,4); }
+
+function novoVinho(nome){
+  return {
+    id:uid(), nome:nome||'',
+    prod:'', tipo:'', reg:'', ano:'', castas:'',
+    natural:false,
+    mom:[null,null,null],
+    e:0, a:0, p:0, ar:0,
+    gloss:[],
+    paraquem:'', segredo:'', nota:'',
+    local:''
+  };
+}
+
+/* ── MODAL ── */
+function addVinho(){
+  document.getElementById('modal-nome').value='';
+  document.getElementById('modalOverlay').classList.add('open');
+  setTimeout(()=>document.getElementById('modal-nome').focus(),280);
+}
+function closeModal(e){
+  if(!e||e.target===document.getElementById('modalOverlay'))
+    document.getElementById('modalOverlay').classList.remove('open');
+}
+function confirmAdd(){
+  const nome = document.getElementById('modal-nome').value.trim()||'Vinho '+(vinhos.length+1);
+  document.getElementById('modalOverlay').classList.remove('open');
+  vinhos.push(novoVinho(nome));
+  vActual = vinhos.length-1;
+  render();
+}
+
+/* ── RENDER GERAL ── */
+function render(){
+  const empty = document.getElementById('empty-state');
+  const panesEl = document.getElementById('vinho-panes');
+  const tabsEl = document.getElementById('tabs-wrap');
+
+  if(vinhos.length===0){
+    empty.style.display=''; panesEl.innerHTML=''; tabsEl.innerHTML=''; return;
+  }
+  empty.style.display='none';
+
+  // Tabs
+  tabsEl.innerHTML = vinhos.map((v,i)=>{
+    const label = v.nome ? (v.nome.length>16?v.nome.slice(0,16)+'…':v.nome) : 'Vinho '+(i+1);
+    const done = i!==vActual && (v.nome&&v.prod&&v.reg);
+    return `<div class="v-tab${i===vActual?' active':done?' done':''}" onclick="switchVinho(${i})">
+      ${label}
+      <span class="tab-x" onclick="event.stopPropagation();removeVinho(${i})">✕</span>
+    </div>`;
+  }).join('');
+
+  // Panes — só rebuild se necessário
+  panesEl.innerHTML = vinhos.map((_,i)=>`<div class="vinho-pane${i===vActual?' active':''}" id="vp-${i}">${bVF(i)}</div>`).join('');
+}
+
+function switchVinho(i){
+  saveFields(vActual);
+  vActual=i;
+  render();
+}
+
+function removeVinho(i){
+  if(vinhos.length===1){limparActual();return;}
+  vinhos.splice(i,1);
+  if(vActual>=vinhos.length) vActual=vinhos.length-1;
+  render();
+}
+
+/* ── BUILDER DE PANE ── */
+function bVF(i){
+  const v = vinhos[i];
+
+  // Regiões select
+  const regOpts = Object.entries(REGIOES).map(([k,l])=>
+    `<option value="${k}"${v.reg===k?' selected':''}>${l||'— Região —'}</option>`).join('');
+
+  // Eixos
+  const eixos = [
+    {key:'e',label:'Estrutura'},
+    {key:'a',label:'Acidez'},
+    {key:'p',label:'Persistência'},
+    {key:'ar',label:'Aromaticidade'}
+  ];
+  const eixosHtml = eixos.map(ex=>
+    `<div class="eixo-line">
+      <div class="eixo-lbl-txt">${ex.label}</div>
+      <div class="eixo-circles">
+        ${[1,2,3].map(n=>`<div class="e-circle${v[ex.key]===n?' sel':''}" onclick="sE(${i},'${ex.key}',${n},this)">${n}</div>`).join('')}
+      </div>
+    </div>`).join('');
+
+  // Momentos
+  const momHtml = Object.entries(MOMENTOS).map(([k,lbl])=>{
+    const pos = v.mom.indexOf(k);
+    const cls = pos===0?'p1':pos===1?'p2':pos===2?'p3':'';
+    const badge = pos>=0?String(pos+1):'';
+    return `<div class="mom-btn${cls?' '+cls:''}" onclick="sMom(${i},'${k}',this)" id="mb-${i}-${k}">
+      <span class="mb">${badge}</span>
+      <span class="mc">${k}</span>
+      <span class="mn">${lbl}</span>
+    </div>`;
+  }).join('');
+
+  // Glossário
+  const glossHtml = bGloss(i, v);
+
+  return `
+  <div class="sec-title">Vinho</div>
+  <div class="field">
+    <label>Nome do vinho <span class="req">*</span></label>
+    <input id="v${i}-nome" value="${esc(v.nome)}" placeholder="ex: Herdade do Esporão Reserva" oninput="sv(${i})">
+  </div>
+  <div class="field">
+    <label>Produtor <span class="req">*</span></label>
+    <input id="v${i}-prod" value="${esc(v.prod)}" placeholder="ex: Herdade do Esporão" oninput="sv(${i})">
+  </div>
+  <div class="row3g">
+    <div class="field">
+      <label>Tipo</label>
+      <select id="v${i}-tipo" onchange="sv(${i})">
+        <option value="">—</option>
+        <option value="tinto"${v.tipo==='tinto'?' selected':''}>Tinto</option>
+        <option value="branco"${v.tipo==='branco'?' selected':''}>Branco</option>
+        <option value="rosé"${v.tipo==='rosé'?' selected':''}>Rosé</option>
+        <option value="espumante"${v.tipo==='espumante'?' selected':''}>Espumante</option>
+        <option value="generoso"${v.tipo==='generoso'?' selected':''}>Generoso</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Região <span class="req">*</span></label>
+      <select id="v${i}-reg" onchange="sv(${i})">${regOpts}</select>
+    </div>
+    <div class="field">
+      <label>Ano</label>
+      <input id="v${i}-ano" value="${esc(v.ano)}" placeholder="2021" inputmode="numeric" maxlength="4" oninput="sv(${i})">
+    </div>
+  </div>
+  <div class="field">
+    <label>Castas</label>
+    <input id="v${i}-castas" value="${esc(v.castas)}" placeholder="ex: Aragonez, Alicante Bouschet" oninput="sv(${i})">
+  </div>
+  <div class="field">
+    <label>Natural / Biodinâmico / Ânfora</label>
+    <div class="nat-row">
+      <div class="nat-btn${!v.natural?' sel':''}" id="nn-${i}" onclick="sNat(${i},false)">Não</div>
+      <div class="nat-btn${v.natural?' sel':''}" id="ny-${i}" onclick="sNat(${i},true)">Sim</div>
+    </div>
+  </div>
+  <div class="field">
+    <label>Local da prova</label>
+    <input id="v${i}-local" value="${esc(v.local)}" placeholder="ex: Wine Bar Uvae, Lagos" oninput="sv(${i})">
+    <div class="field-hint">Popula Spot_EnoPilot + Cidade_Spot na Master Sheet</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="field">
+    <label>Momentos EnoPilot <span class="req">*</span></label>
+    <div class="mom-hint">Clica por ordem de importância:<br>
+      <span style="color:var(--wine);font-weight:700;">1º clique = Principal</span> &nbsp;·&nbsp;
+      <span style="color:var(--sanddk);font-weight:700;">2º = Secundário</span> &nbsp;·&nbsp;
+      <span style="color:var(--muted);">3º = Terciário</span>
+    </div>
+    <div class="mom-grid" id="mg-${i}">${momHtml}</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="field">
+    <label>Eixos sensoriais <span class="req">*</span></label>
+    <div class="eixo-hint">1 = suave / baixo &nbsp;·&nbsp; 2 = médio &nbsp;·&nbsp; 3 = intenso / alto</div>
+    ${eixosHtml}
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="field">
+    <label>Glossário EnoPilot — Três Palavras</label>
+    <div class="field-hint">Selecciona exactamente 3 termos de categorias diferentes</div>
+    <div id="gl-${i}">${glossHtml}</div>
+    <div class="tag-counter${v.gloss.length===3?' full':''}" id="gc-${i}">${v.gloss.length} / 3 palavras seleccionadas</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="field">
+    <label>Para quem é este vinho? <span style="font-weight:400;font-size:10px;">(máx. 150 caracteres)</span></label>
+    <input id="v${i}-pq" value="${esc(v.paraquem)}" placeholder="Para quem quer celebrar sem cerimónia" maxlength="150" oninput="sv(${i})">
+    <div class="wc${(v.paraquem||'').length>130?' over':''}" id="wc-${i}">${(v.paraquem||'').length} / 150</div>
+  </div>
+  <div class="field">
+    <label>Segredo do curador</label>
+    <textarea id="v${i}-seg" placeholder="Um detalhe que surpreende. A tua voz pessoal." oninput="sv(${i})">${esc(v.segredo)}</textarea>
+  </div>
+  <div class="field">
+    <label>Nota editorial</label>
+    <textarea id="v${i}-nota" placeholder="A tua nota para o utilizador EnoPilot..." oninput="sv(${i})">${esc(v.nota)}</textarea>
+  </div>
+
+  <div class="preview-card">
+    <div class="preview-label">pré-visualização — nota na app</div>
+    <div id="pe-${i}" class="preview-empty">Preenche nome, tipo, momento principal e 3 palavras para ver a nota gerada.</div>
+    <div id="pn-${i}" class="preview-nota" style="display:none;"></div>
+    <div id="ps-${i}" class="preview-segredo" style="display:none;"></div>
+  </div>
+
+  <div style="height:70px;"></div>`;
+}
+
+/* ── GLOSSÁRIO ── */
+function bGloss(i, v){
+  const sel = v.gloss||[];
+  const maxed = sel.length>=3;
+  let h='';
+  for(const[cat,terms] of Object.entries(GCATS)){
+    h+=`<div class="gloss-section"><div class="gloss-label">${cat}</div><div class="tags">`;
+    for(const t of terms){
+      const s = sel.includes(t);
+      const is3 = s && sel.length===3;
+      h+=`<div class="tag${s?(is3?' sel3':' sel'):''}${maxed&&!s?' disabled':''}" onclick="tGloss(${i},'${t}')">${t}</div>`;
+    }
+    h+=`</div></div>`;
+  }
+  return h;
+}
+
+/* ── INTERACÇÕES ── */
+function sE(i,eixo,val,el){
+  vinhos[i][eixo] = vinhos[i][eixo]===val ? 0 : val;
+  el.closest('.eixo-circles').querySelectorAll('.e-circle').forEach(b=>b.classList.remove('sel'));
+  if(vinhos[i][eixo]!==0) el.classList.add('sel');
+  upPrev(i);
+}
+
+function sNat(i,val){
+  vinhos[i].natural=val;
+  document.getElementById('nn-'+i).classList.toggle('sel',!val);
+  document.getElementById('ny-'+i).classList.toggle('sel',val);
+}
+
+function sMom(i,code,el){
+  const mom = vinhos[i].mom||[null,null,null];
+  const pos = mom.indexOf(code);
+  if(pos>=0){
+    mom.splice(pos,1);
+    while(mom.length<3) mom.push(null);
+  } else {
+    const slot = mom.indexOf(null);
+    if(slot<0) return;
+    mom[slot]=code;
+  }
+  vinhos[i].mom=[...mom];
+  document.querySelectorAll(`#mg-${i} .mom-btn`).forEach(btn=>{
+    const k = btn.id.split('-')[2];
+    const p = mom.indexOf(k);
+    btn.className='mom-btn'+(p===0?' p1':p===1?' p2':p===2?' p3':'');
+    const badge=btn.querySelector('.mb');
+    if(badge) badge.textContent=p>=0?String(p+1):'';
+  });
+  upPrev(i);
+}
+
+function tGloss(i,t){
+  const g = vinhos[i].gloss||[];
+  if(g.includes(t)) vinhos[i].gloss=g.filter(x=>x!==t);
+  else if(g.length<3) vinhos[i].gloss=[...g,t];
+  const cnt = vinhos[i].gloss.length;
+  document.getElementById('gl-'+i).innerHTML=bGloss(i,vinhos[i]);
+  const el=document.getElementById('gc-'+i);
+  el.textContent=cnt+' / 3 palavras seleccionadas';
+  el.className='tag-counter'+(cnt===3?' full':'');
+  upPrev(i);
+}
+
+function sv(i){
+  const v=vinhos[i];
+  v.nome    = val('v'+i+'-nome');
+  v.prod    = val('v'+i+'-prod');
+  v.tipo    = val('v'+i+'-tipo');
+  v.reg     = val('v'+i+'-reg');
+  v.ano     = val('v'+i+'-ano');
+  v.castas  = val('v'+i+'-castas');
+  v.paraquem= val('v'+i+'-pq');
+  v.segredo = val('v'+i+'-seg');
+  v.nota    = val('v'+i+'-nota');
+  v.local   = val('v'+i+'-local');
+  const cc=(v.paraquem||'').length;
+  const wcEl=document.getElementById('wc-'+i);
+  if(wcEl){wcEl.textContent=cc+' / 150';wcEl.className='wc'+(cc>130?' over':'');}
+  // update tab label
+  renderTabs();
+  upPrev(i);
+}
+
+function saveFields(i){
+  if(!vinhos[i]) return;
+  sv(i);
+}
+
+function renderTabs(){
+  const tabsEl=document.getElementById('tabs-wrap');
+  tabsEl.innerHTML=vinhos.map((v,i)=>{
+    const label=v.nome?(v.nome.length>16?v.nome.slice(0,16)+'…':v.nome):'Vinho '+(i+1);
+    const done=i!==vActual&&(v.nome&&v.prod&&v.reg);
+    return`<div class="v-tab${i===vActual?' active':done?' done':''}" onclick="switchVinho(${i})">
+      ${label}
+      <span class="tab-x" onclick="event.stopPropagation();removeVinho(${i})">✕</span>
+    </div>`;
+  }).join('');
+}
+
+function upPrev(i){
+  const v=vinhos[i];
+  const g=v.gloss||[];
+  const m=(v.mom||[])[0];
+  let nota=v.nota;
+  if(!nota && v.nome && v.tipo && m && g.length===3){
+    nota=(TIPO_ARTIGO[v.tipo]||'Um vinho')+' '+g.join(', ')+
+         '. Ideal para o momento '+MOMENTOS[m]+
+         (v.paraquem?' — '+v.paraquem:'')+'.';
+  }
+  const pe=document.getElementById('pe-'+i);
+  const pn=document.getElementById('pn-'+i);
+  const ps=document.getElementById('ps-'+i);
+  if(!pe) return;
+  if(nota){
+    pe.style.display='none';
+    pn.style.display='block';
+    pn.textContent=nota;
+    if(v.segredo){ps.style.display='block';ps.textContent='— '+getCurador()+': "'+v.segredo+'"';}
+    else ps.style.display='none';
+  } else {
+    pe.style.display='block';pn.style.display='none';ps.style.display='none';
+  }
+}
+
+/* ── UTILITÁRIOS ── */
+function val(id){const el=document.getElementById(id);return el?el.value:'';}
+function getCurador(){return document.getElementById('f-curador').value.trim()||'Hugo Conde';}
+function esc(s){return String(s||'').replace(/"/g,'&quot;').replace(/</g,'&lt;');}
+
+function limparActual(){
+  if(vinhos.length===0) return;
+  const v=vinhos[vActual];
+  if(!confirm('Limpar todos os dados de "'+( v.nome||'este vinho')+'"?')) return;
+  Object.assign(v,novoVinho(v.nome));
+  render();
+  toast('Vinho limpo.');
+}
+
+/* ── GERAÇÃO DE NOTA ── */
+function gerarNota(v){
+  if(v.nota) return v.nota;
+  const g=v.gloss||[];
+  const m=(v.mom||[])[0];
+  if(v.tipo&&m&&g.length===3){
+    return (TIPO_ARTIGO[v.tipo]||'Um vinho')+' '+g.join(', ')+
+           '. Ideal para o momento '+MOMENTOS[m]+
+           (v.paraquem?' — '+v.paraquem:'')+'.';
+  }
+  return '';
+}
+
+/* ── PARSEAR LOCAL ── */
+function parsearLocal(local){
+  if(!local) return {spot:'—',cidade:'—'};
+  const parts = local.split(',').map(s=>s.trim());
+  if(parts.length>=2){
+    return {spot:parts.slice(0,-1).join(', '), cidade:parts[parts.length-1]};
+  }
+  return {spot:local, cidade:'—'};
+}
+
+/* ── EMAIL ── */
+function enviarEmail(){
+  saveFields(vActual);
+  if(vinhos.length===0){toast('Sem vinhos para enviar.');return;}
+
+  const curador = getCurador();
+  const data = new Date().toLocaleDateString('pt-PT');
+  const subject = `EnoPilot Ficha de Prova — ${curador} — ${data}`;
+
+  let corpo = `ENOPILOT™ — FICHA DE PROVA\nCurador: ${curador}  |  Data: ${data}\n${'═'.repeat(50)}\n\n`;
+
+  vinhos.forEach((v,idx)=>{
+    const nota = gerarNota(v);
+    const notaFinal = nota ? (v.segredo ? nota+' — '+curador+': "'+v.segredo+'"' : nota) : '(incompleta)';
+    const local = parsearLocal(v.local);
+    const momLabels = (v.mom||[]).filter(Boolean).map(k=>MOMENTOS[k]||k);
+    const regLabel = REGIOES[v.reg]||v.reg||'—';
+
+    corpo += `VINHO ${idx+1} — ${v.nome||'(sem nome)'}\n${'─'.repeat(40)}\n`;
+    corpo += `Nome:       ${v.nome||'—'}\n`;
+    corpo += `Produtor:   ${v.prod||'—'}\n`;
+    corpo += `Região:     ${regLabel}\n`;
+    corpo += `Ano:        ${v.ano||'—'}\n`;
+    corpo += `Castas:     ${v.castas||'—'}\n`;
+    corpo += `Tipo:       ${v.tipo||'—'}\n`;
+    corpo += `Natural:    ${v.natural?'TRUE':'FALSE'}\n`;
+    corpo += `Estrutura:  ${v.e||'—'}   Acidez: ${v.a||'—'}   Persistência: ${v.p||'—'}   Aromaticidade: ${v.ar||'—'}\n`;
+    corpo += `Momento 1:  ${momLabels[0]||'—'}\n`;
+    corpo += `Momento 2:  ${momLabels[1]||'—'}\n`;
+    corpo += `Momento 3:  ${momLabels[2]||'—'}\n`;
+    corpo += `3 Palavras: ${v.gloss&&v.gloss.length?v.gloss.join(', '):'—'}\n`;
+    corpo += `Para quem:  ${v.paraquem||'—'}\n`;
+    corpo += `Segredo:    ${v.segredo||'—'}\n`;
+    corpo += `Nota:       ${nota||'—'}\n`;
+    corpo += `Spot:       ${local.spot}\n`;
+    corpo += `Cidade:     ${local.cidade}\n`;
+    corpo += `\n`;
+
+    // Linha TSV para copy/paste directo (ordem Master Sheet A→Y)
+    const tsv = [
+      '—',            // Codigo_Vinho (atribuído pela Master Sheet)
+      v.nome||'',
+      v.prod||'',
+      regLabel,
+      v.ano||'',
+      v.castas||'',
+      v.tipo||'',
+      v.e||'',
+      v.a||'',
+      v.p||'',
+      v.ar||'',
+      '—',            // Cor (não capturado na ficha)
+      momLabels[0]||'',
+      momLabels[1]||'',
+      momLabels[2]||'',
+      curador,
+      notaFinal,
+      local.spot,
+      local.cidade,
+      '—',            // Preco_Escala
+      v.gloss&&v.gloss.length?v.gloss.join(', '):'',
+      v.paraquem||'',
+      v.segredo||'',
+      v.natural?'TRUE':'FALSE',
+      notaFinal
+    ].map(x=>String(x)).join('\t');
+
+    corpo += `LINHA MASTER SHEET (cola directamente no Google Sheet com Tab):\n`;
+    corpo += `${tsv}\n`;
+    corpo += `\n${'═'.repeat(50)}\n\n`;
+  });
+
+  const mailto = `mailto:winex.enoteca@gmail.com?from=uvae.pt@gmail.com&subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(corpo)}`;
+  window.location.href = mailto;
+}
+
+/* ── TOAST ── */
+let toastTimer;
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),2400);
+}
+
+/* ── INICIALIZAÇÃO ── */
+(function(){
+  vinhos.push(novoVinho('Vinho 1'));
+  render();
+})();
+</script>
+</body>
+</html>
